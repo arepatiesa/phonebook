@@ -4,12 +4,15 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.static("dist"))
-
+require('dotenv').config()
+const People = require('./models/people')
 
 let persons = [];
 
 app.get("/api/persons", (req, res) => {
-  res.json(persons)
+  People.find({}).then(persons => {
+    res.json(persons)
+  })
 });
 
 app.get("/api/persons/:id", (req, res) => {
@@ -28,7 +31,7 @@ const generateId = () => {
   return maxId + 1;
 };
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/people", (req, res) => {
   const body = req.body;
 
   const status404 = (text) => {
@@ -63,7 +66,7 @@ app.delete("/api/persons/:id", (req, res) => {
   res.status(204).end();
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
