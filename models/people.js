@@ -12,9 +12,24 @@ mongoose.connect(url).then(result => {
     console.log('Error connecting to MongoDB:', error.message);
 })
 
+let validNumber = (number) => {
+    return /^\d{2,3}-\d+$/.test(number)
+} 
+
+let custom = [validNumber, "Invalid phonenumber"]
+
 const peopleSchema = new mongoose.Schema({
-    name: String,
-    number: Number,
+    name: {
+        type: String,
+        minLength: 4,
+        required: true
+    },
+    number: {
+        type: String,
+        minLength: 8,
+        validate: custom,
+        required: true,
+    },
 })
 
 peopleSchema.set('toJSON', {
