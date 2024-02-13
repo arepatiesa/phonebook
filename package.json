@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:ui": "cd ../../phonebook && rm -rf dist && cd ../FSO/part2/phonebook && npm run build && cp -r dist ../../../phonebook && rm -rf dist",
-    "deploy:full": "npm run build:ui && cd ../../phonebook && git add . && git commit -m uibuild && git push origin main",
+    "build:ui": "rm -rf dist && cd ../part2/phonebook && npm run build && cp -r dist ../../part3 && rm -rf dist",
+    "build:external": "cd ../../phonebook && rm -rf dist && cd ../FSO/part2/phonebook && npm run build && cp -r dist ../../../phonebook && rm -rf dist",
+    "deploy:full": "npm run build:external && cd ../../phonebook && git add . && git commit -m uibuild && git push origin main",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +20,8 @@
     "mongoose": "^8.1.1"
   },
   "devDependencies": {
+    "@stylistic/eslint-plugin-js": "^1.6.1",
+    "eslint": "^8.56.0",
     "nodemon": "^3.0.3"
   }
 }

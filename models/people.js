@@ -1,22 +1,24 @@
-const mongoose = require('mongoose')
-require('dotenv').config()
+const mongoose = require('mongoose');
+const process = require('process');
+require('dotenv').config();
 
-const url = `mongodb+srv://carlosmosorio:hfayfiyh95@cluster0.limedqo.mongodb.net/phonebook?retryWrites=true&w=majority`
+
+const url = process.env.MONGODB_URI;
 
 console.log('Connecting to', url);
 
-mongoose.set('strictQuery', false)
-mongoose.connect(url).then(result => {
+mongoose.set('strictQuery', false);
+mongoose.connect(url).then(() => {
     console.log('Connected to MongoDB');
 }).catch(error => {
     console.log('Error connecting to MongoDB:', error.message);
-})
+});
 
 let validNumber = (number) => {
-    return /^\d{2,3}-\d+$/.test(number)
-} 
+    return /^\d{2,3}-\d+$/.test(number);
+};
 
-let custom = [validNumber, "Invalid phonenumber"]
+let custom = [validNumber, 'Invalid phonenumber'];
 
 const peopleSchema = new mongoose.Schema({
     name: {
@@ -30,15 +32,15 @@ const peopleSchema = new mongoose.Schema({
         validate: custom,
         required: true,
     },
-})
+});
 
 peopleSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString(),
-        delete returnedObject._id
-        delete returnedObject.__v
+        delete returnedObject._id;
+        delete returnedObject.__v;
     }
-})
+});
 
 
-module.exports = mongoose.model('People', peopleSchema)
+module.exports = mongoose.model('People', peopleSchema);
